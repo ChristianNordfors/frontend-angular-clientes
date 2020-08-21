@@ -1,0 +1,108 @@
+<ul class="alert alert-danger" *ngIf="errores?.length>0">
+  <li *ngFor="let err of errores">
+      {{ err }}
+  </li>
+</ul>
+<div class="card">
+  <div class="card-header">Creación de cliente</div>
+  <div class="card-body">
+
+   <form #clienteForm="ngForm">
+
+     <div class="form-group row">
+       <label for="nombre" class="col-form-label col-sm-1">Nombre</label>
+       <div class="col-sm-6">
+         <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="3" maxlength="12" #nombre="ngModel">
+         <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.touched)">
+           <div *ngIf="nombre.errors.required">
+             El nombre es requerido.
+           </div>
+           <div *ngIf="nombre.errors.minlength">
+             El nombre debe tener entre 3 y 12 caracteres.
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <div class="form-group row">
+       <label for="apellido" class="col-form-label col-sm-1">Apellido</label>
+       <div class="col-sm-6">
+         <input type="text" class="form-control" name="apellido" [(ngModel)]="cliente.apellido" required minlength="2" maxlength="14" #apellido="ngModel">
+         <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
+           <div *ngIf="apellido.errors.required">
+             El apellido es requerido.
+           </div>
+           <div *ngIf="apellido.errors.minlength || apellido.errors.maxlength">
+             El apellido debe tener entre 2 y 14 caracteres.
+           </div>
+         </div>
+       </div>
+     </div>
+
+
+     <div class="form-group row">
+       <label for="email" class="col-form-label col-sm-1">Email</label>
+       <div class="col-sm-6">
+         <input type="email" class="form-control" name="email" [(ngModel)]="cliente.email" required email #email="ngModel">
+         <div class="alert alert-danger" *ngIf="email.invalid && (email.touched)">
+           <div *ngIf="email.errors.required">
+             El email es requerido.
+           </div>
+           <div *ngIf="email.errors.email">
+             El email debe tener un formato válido.
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <div class="form-group row">
+       <label for="createAt" class="col-form-label col-sm-1">Fecha</label>
+       <div class="col-sm-6">
+         <!-- <input type="date" class="form-control" name="createAt" [(ngModel)]="cliente.createAt" #createAt="ngModel"> -->
+         <input class="form-control" name="createAt" [(ngModel)]="cliente.createAt" #createAt="ngModel" matInput [matDatepicker]="picker" style="display:inline;width:300px;" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+         <div class="alert alert-danger" *ngIf="createAt.invalid && (createAt.dirty || createAt.touched)">
+           <div *ngIf="createAt.errors.required">
+             La fecha es requerida.
+           </div>
+           <!-- <div *ngIf="createAt.errors.minlength || createAt.errors.maxlength">
+             El apellido debe tener entre 2 y 14 caracteres.
+           </div> -->
+         </div>
+       </div>
+     </div>
+
+     <div class="form-group row">
+       <label for="region" class="col-form-label col-sm-1">Región</label>
+       <div class="col-sm-6">
+         <!-- <input type="date" class="form-control" name="createAt" [(ngModel)]="cliente.createAt" #createAt="ngModel"> -->
+         <select [compareWith]="compararRegion" class="form-control" name="region" [(ngModel)]="cliente.region" #region="ngModel" style="width:300px;" required>
+            <option class="text-info" disabled [ngValue]="undefined">Seleccionar región</option>
+            <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+          </select>
+         <div class="alert alert-danger" *ngIf="region.invalid && (region.dirty || region.touched)">
+           <div *ngIf="region.errors.required">
+             La región es requerida.
+           </div>
+           <!-- <div *ngIf="createAt.errors.minlength || createAt.errors.maxlength">
+             El apellido debe tener entre 2 y 14 caracteres.
+           </div> -->
+         </div>
+       </div>
+     </div>
+
+    <div class="form-group row">
+       <div class="col-sm-6 mt-3">
+         <button class="btn btn-primary rounded-lg" role="button" (click)="create()" *ngIf="!cliente.id else elseBlock" [disabled]="clienteForm.form.invalid">Crear</button>
+
+         <ng-template #elseBlock>
+           <button class="btn btn-primary rounded-lg" role="button" (click)="update()" [disabled]="!clienteForm.form.valid || clienteForm.form.pristine">Editar</button>
+         </ng-template>
+       </div>
+    </div>
+
+   </form>
+
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">{{title}}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!-- <li class="text-muted mr-2 align-middle">
+        |
+      </li> -->
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/directivas">Directivas <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/clientes">Clientes <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav navbar-right ">
+
+      <!-- <li *ngIf="!authService.isAuthenticated()" class="btn-group  dropleft">
+    <button  type="button" class="btn btn-outline-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <button [routerLink]="['/login']" class="btn btn-outline-light">Ingresar</button>
+
+
+    <div class="dropdown-menu shadow" aria-labelledby="dropdownMenuReference">
+      <form #navForm="ngForm" class="p-3">
+    <div class="form-group">
+      <label for="exampleDropdownFormEmail2">Usuario</label>
+      <input [(ngModel)]="usuario.username" name="username" type="text" class="form-control" id="exampleDropdownFormEmail2" placeholder="Usuario" required>
+    </div>
+    <div class="form-group">
+      <label for="exampleDropdownFormPassword2">Contraseña</label>
+      <input [(ngModel)]="usuario.password" name=password type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Contraseña" required>
+    </div>
+
+    <button [disabled]="navForm.form.invalid" (click)="loginNav()" type="button" class="btn btn-primary">Ingresar</button>
+  </form>
+    </div>
+  </li> -->
+      <li *ngIf="!authService.isAuthenticated()"><a [routerLink]="['/login']" class="btn btn-outline-light mr-3">Ingresar</a></li>
+
+
+      <li *ngIf="authService.isAuthenticated()" class="dropdown">
+        <a class="btn btn-outline-light dropdown-toggle px-3" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{authService.usuario.username}}
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right text-center shadow" aria-labelledby="dropdownMenuLink">
+          <button (click)="logout()" class="dropdown-item">Pefil</button>
+          <button (click)="logout()" class="dropdown-item">Ajustes</button>
+
+          <div class="dropdown-divider"></div>
+          <button (click)="logout()" class="dropdown-item">Salir</button>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+</nav>

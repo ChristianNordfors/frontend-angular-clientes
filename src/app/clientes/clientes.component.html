@@ -1,0 +1,55 @@
+<detalle-cliente *ngIf="clienteSeleccionado" [cliente]="clienteSeleccionado"></detalle-cliente>
+
+
+<div class="card mt-2 mb-5 animated fadeIn faster">
+  <h3 class="card-header">Listado de clientes</h3>
+  <div class="card-body text-primary" style="overflow-x:auto;">
+
+
+    <div class="my-2 text-right">
+      <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-rounded btn-primary" type="button" [routerLink]="['/clientes/form']">Crear cliente</button>
+    </div>
+
+    <div class="alert alert-info mt-4" *ngIf="clientes?.length === 0">
+      No hay registros para mostrar.
+    </div>
+
+    <table class="table table-bordered table-striped" *ngIf="clientes?.length > 0">
+      <thead class="text-center">
+        <tr>
+          <th *ngIf="authService.hasRole('ROLE_USER')">Perfil</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Fecha</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Opciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <tr *ngFor="let cliente of clientes">
+          <!-- <td><button type="button" [routerLink]="['/clientes/ver', cliente.id]" class="btn btn-primary btn-sm">{{ cliente.id }}</button></td> -->
+          <!-- <td><button type="button" (click)="abrirModal(cliente)" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary btn-sm">{{ cliente.id }}</button></td> -->
+          <td *ngIf="authService.hasRole('ROLE_USER')">
+            <img *ngIf="!cliente?.foto" type="button" (click)="abrirModal(cliente)" type="button" data-toggle="modal" data-target="#exampleModalCenter" src="{{urlBackend}}/images/no-usuario.png" alt="Sin foto" class="img rounded-circle"  style="width:40px;height:40px">
+
+            <img *ngIf="cliente?.foto" type="button" (click)="abrirModal(cliente)" type="button" data-toggle="modal" data-target="#exampleModalCenter" src="{{urlBackend}}/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img rounded-circle"  style="width:40px;height:40px">
+          </td>
+          <td class="align-middle">{{ cliente.nombre }}</td>
+          <td class="align-middle">{{ cliente.apellido | uppercase }}</td>
+          <td class="align-middle">{{ cliente.email }}</td>
+          <td class="align-middle">{{ cliente.createAt | date:"dd-MM-yyyy" }}</td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')" class="text-center align-middle">
+            <button type="button" name="crear" class="btn btn-success btn-sm mr-1" [routerLink]="['/facturas/form', cliente.id]">Crear</button>
+            <button type="button" name="editar" [routerLink]="['/clientes/form', cliente.id]" class="btn btn-sm btn-primary mr-1">Editar</button>
+            <button type="button" name="eliminar" (click)='delete(cliente)' class="btn btn-sm btn-danger">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Se inyecta en el atributo [paginador] del componente HIJO
+        el "paginador del componente padre". Es una forma de inyeccion de dependencia
+        Para que suceda hay que usar el decorador input en la clase hija -->
+    <paginator-nav *ngIf="paginator" [paginador]="paginator"></paginator-nav>
+    <!-- con el *ngIf nos aseguramos que el atributo paginador del padre exista y contenga los atributos
+          porque sino serian dos procesos asincronos tanto del padre como el hijo corriendo al mismo tiempo -->
+  </div>
