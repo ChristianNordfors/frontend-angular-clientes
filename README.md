@@ -2,7 +2,7 @@
 
 ```
 user: admin
-pass: 1
+pass: 12345
 ```
 
 <https://clientes-facturacion-angular.web.app/login>
